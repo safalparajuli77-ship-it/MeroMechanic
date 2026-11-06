@@ -1,996 +1,457 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mero Mechanic | Nearby Vehicle Services</title>
- <link rel="icon" type="image/jpeg" href="MERO MECH LOGO.JPG">
-
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#d62828">
+<meta name="color-scheme" content="light dark">
+<script>(function(){var t;try{t=localStorage.getItem('mm-theme')}catch(e){}document.documentElement.dataset.theme=t||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})()</script>
+<title>Mero Mechanic</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-* { box-sizing: border-box; }
-
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #0f172a;
+:root{
+  --bg:#f6f6f4; --card:#fff; --ink:#26282b; --muted:#6b6f75; --line:#e7e7e3;
+  --red:#d62828; --red-d:#b11f1f; --yellow:#f4b942; --yellow-bg:#fff6dd;
+  --radius:16px; --shadow:0 1px 2px rgba(20,20,20,.06),0 4px 14px rgba(20,20,20,.05);
+  --hover:#f3f3f1; --emerg-line:#f1dca0; --emerg-in:#f1e6bd; --dash:#d4d4cf; color-scheme:light;
 }
-
-.service-btn {
-  border: 1px solid #475569;
-  background: #1e293b;
-  transition: .2s;
+:root[data-theme="dark"]{
+  --bg:#121315; --card:#1b1d20; --ink:#ececee; --muted:#9a9ea6; --line:#2d3035;
+  --red:#e5484d; --red-d:#cf3a3f; --yellow-bg:#2a2412;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  --hover:#26292d; --emerg-line:#4a3d17; --emerg-in:#3d3314; --dash:#3a3e44; color-scheme:dark;
 }
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 16px}
+svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.service-btn:hover {
-  border-color: #facc15;
-}
+header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.bar{display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:9px;background:var(--red);display:grid;place-items:center;color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:10px 16px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-d)}
+.btn-ghost{background:var(--card);border:1px solid var(--line)}.btn-ghost:hover{background:var(--hover)}
+.btn-sm{padding:8px 12px;font-size:.88rem;border-radius:10px}
+.btn[disabled]{opacity:.6;cursor:wait}
 
-.service-btn.active {
-  background: #dc2626;
-  border-color: #dc2626;
-  color: white;
-}
+.hero{padding:28px 0 8px}
+.hero h1{font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.2;letter-spacing:-.01em}
+.hero p{color:var(--muted);margin:8px 0 18px;max-width:52ch}
+.status{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.9rem;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:#bbb}
+.dot.ok{background:#2e9e5b}
 
-.service-card {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 16px;
-  padding: 20px;
-  transition: .2s;
-}
+.section{margin-top:22px;scroll-margin-top:76px}
+.emerg{background:var(--yellow-bg);border:1px solid var(--emerg-line);border-radius:var(--radius);padding:12px}
+.emerg h2{font-size:.95rem;margin-bottom:8px}
+.emerg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.emerg a{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;padding:10px 12px;text-decoration:none;border:1px solid var(--emerg-in)}
+.emerg a:hover{border-color:var(--red)}
+.emerg b{font-size:1.1rem;color:var(--red);margin-left:auto}
+.emerg span{font-size:.88rem}
 
-.service-card:hover {
-  border-color: #ef4444;
-  transform: translateY(-3px);
-}
+.controls{display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.9rem;transition:all .15s}
+.chip small{color:var(--muted);margin-left:4px}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip[aria-pressed=true] small{color:var(--bg);opacity:.7}
+.row{display:flex;gap:8px}
+.field{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px}
+.field input,.field select{border:0;background:transparent;width:100%;padding:11px 0;outline:0}
+.field:focus-within{border-color:var(--red)}
+.field.sel{flex:0 0 auto}
+.field select option{background:var(--card);color:var(--ink)}
+.field input::placeholder{color:var(--muted)}
+.count{font-size:.88rem;color:var(--muted);margin:14px 2px 8px}
 
-.hidden {
-  display: none !important;
-}
+.list{display:grid;gap:12px;padding-bottom:36px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;border:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.card h3{font-size:1.02rem;line-height:1.3}
+.tag{display:inline-block;font-size:.76rem;border-radius:999px;padding:2px 9px;background:var(--yellow-bg);margin-top:4px}
+.dist{font-weight:700;color:var(--red);white-space:nowrap}
+.meta{margin:10px 0 0;display:grid;gap:5px;font-size:.88rem;color:var(--muted)}
+.meta div{display:flex;gap:8px;align-items:flex-start}
+.meta svg{width:16px;height:16px;margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 
-button:disabled {
-  opacity: .6;
-  cursor: wait;
-}
+.state{background:var(--card);border:1px dashed var(--dash);border-radius:var(--radius);padding:28px 18px;text-align:center}
+.state h3{margin-bottom:6px}
+.state p{color:var(--muted);max-width:44ch;margin:0 auto 14px;font-size:.93rem}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--red);border-radius:50%;margin:0 auto 12px;animation:r .8s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(214,40,40,.45)}100%{box-shadow:0 0 0 14px rgba(214,40,40,0)}}
+.card{animation:rise .35s ease both;animation-delay:calc(var(--i,0) * 40ms)}
+.btn-red.pulse{animation:ring 1.4s ease-out infinite}
+body,header,.card,.field,.state,footer,.emerg,.emerg a{transition:background-color .25s,color .25s,border-color .25s}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}*{transition:none!important}.card,.pulse{animation:none!important}}
+
+footer{margin-top:auto;border-top:1px solid var(--line);background:var(--card);padding:16px 0;font-size:.82rem;color:var(--muted);text-align:center}
+footer a{color:var(--red)}
+.hide{display:none!important}
+@media(min-width:700px){.emerg-grid{grid-template-columns:repeat(4,1fr)}.controls{flex-direction:row;flex-wrap:wrap}.chips{width:100%}.controls .row{width:100%}}
 </style>
 </head>
+<body>
 
-<body class="text-slate-100 min-h-screen flex flex-col">
-
-<!-- HEADER -->
-<header class="bg-slate-950 border-b border-slate-700 sticky top-0 z-40">
-  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-
-    <div class="flex items-center gap-3">
-      <i class="fa-solid fa-screwdriver-wrench text-yellow-400 text-2xl"></i>
-      <div>
-        <h1 class="font-extrabold text-xl">Mero Mechanic</h1>
-        <p class="text-xs text-slate-400">Chitwan, Nepal</p>
-      </div>
-    </div>
-
-    <a href="tel:103"
-       class="text-yellow-300 font-bold text-sm">
-      <i class="fa-solid fa-phone"></i> 103 / 100
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Mero Mechanic home">
+      <i><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></i>
+      Mero Mechanic
     </a>
-
+    <div style="display:flex;gap:8px;align-items:center"><button class="btn btn-ghost btn-sm" id="themeBtn" type="button"></button><a class="btn btn-red btn-sm" href="#emergency"><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Emergency</a></div>
   </div>
 </header>
 
-
-<!-- INTRO -->
-<section class="bg-gradient-to-r from-red-950 to-slate-900 px-4 py-12 text-center">
-
-  <p class="text-yellow-300 text-xs font-bold uppercase tracking-widest mb-3">
-    GPS-based vehicle assistance
-  </p>
-
-  <h2 class="text-3xl md:text-4xl font-extrabold mb-3">
-    Find Nearby Vehicle Services
-  </h2>
-
-  <p class="text-slate-300 text-sm max-w-xl mx-auto mb-7">
-    Discover nearby mechanics, garages, petrol pumps, EV charging stations
-    and towing services using your current location.
-  </p>
-
-  <!-- THIS BUTTON TRIGGERS THE NATIVE BROWSER PERMISSION PROMPT -->
-  <button id="locationButton"
-          onclick="requestLocation()"
-          class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold px-7 py-4 rounded-xl shadow-lg">
-
-    <i class="fa-solid fa-location-crosshairs mr-2"></i>
-    Find Services Near Me
-
-  </button>
-
-  <p id="status" role="status" aria-live="polite"
-     class="text-sm text-yellow-200 mt-5">
-    Location has not been requested.
-  </p>
-
-</section>
-
-
-<!-- EMERGENCY CONTACTS -->
-<section class="bg-slate-950 py-5 px-4 border-b border-slate-800">
-
-  <div class="max-w-6xl mx-auto">
-
-    <h3 class="text-xs font-bold uppercase text-red-400 mb-3">
-      Emergency Contacts
-    </h3>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-
-      <a href="tel:102" class="bg-slate-800 p-3 rounded-xl text-center">
-        <i class="fa-solid fa-truck-medical text-red-400"></i>
-        <p class="text-xs mt-1">Ambulance</p>
-        <strong class="text-yellow-300 text-sm">102</strong>
-      </a>
-
-      <a href="tel:101" class="bg-slate-800 p-3 rounded-xl text-center">
-        <i class="fa-solid fa-fire-extinguisher text-orange-400"></i>
-        <p class="text-xs mt-1">Fire Brigade</p>
-        <strong class="text-yellow-300 text-sm">101</strong>
-      </a>
-
-      <a href="tel:100" class="bg-slate-800 p-3 rounded-xl text-center">
-        <i class="fa-solid fa-shield-halved text-blue-400"></i>
-        <p class="text-xs mt-1">Police</p>
-        <strong class="text-yellow-300 text-sm">100</strong>
-      </a>
-
-      <a href="tel:103" class="bg-slate-800 p-3 rounded-xl text-center">
-        <i class="fa-solid fa-road text-green-400"></i>
-        <p class="text-xs mt-1">Traffic Police</p>
-        <strong class="text-yellow-300 text-sm">103</strong>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- MAIN APPLICATION -->
-<main class="max-w-7xl mx-auto px-4 py-9 flex-1 w-full">
-
-  <!-- BEFORE LOCATION -->
-  <section id="welcome" class="text-center py-10">
-
-    <div class="text-5xl text-slate-600 mb-5">
-      <i class="fa-solid fa-map-location-dot"></i>
-    </div>
-
-    <h3 class="text-xl font-bold mb-2">
-      Waiting for your location
-    </h3>
-
-    <p class="text-sm text-slate-400 max-w-md mx-auto">
-      Click "Find Services Near Me". Your browser will ask whether
-      you want to share your location.
-    </p>
-
-    <p class="text-xs text-slate-500 mt-4">
-      No sample shops will be displayed before location detection.
-    </p>
-
+<main class="wrap" id="top">
+  <section class="hero">
+    <h1>Find vehicle help near you</h1>
+    <p>Mechanics, petrol pumps, EV chargers and towing, pulled live from OpenStreetMap around your location.</p>
+    <button class="btn btn-red" id="locBtn" type="button">
+      <svg viewBox="0 0 24 24" style="stroke:#fff"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+      <span id="locBtnText">Use my location</span>
+    </button>
+    <div class="status" aria-live="polite"><span class="dot" id="dot"></span><span id="statusText">Location not detected yet</span></div>
   </section>
 
-
-  <!-- AFTER LOCATION -->
-  <section id="resultsSection" class="hidden">
-
-    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-7">
-
-      <div class="flex flex-wrap justify-between items-center gap-3">
-
-        <div>
-          <p class="text-xs text-slate-400">Your detected coordinates</p>
-          <p id="coordinates" class="font-bold text-sm mt-1"></p>
-        </div>
-
-        <button onclick="requestLocation()"
-                class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-xs font-bold">
-          <i class="fa-solid fa-rotate"></i> Refresh Location
-        </button>
-
+  <section class="section" id="emergency" aria-label="Emergency contacts">
+    <div class="emerg">
+      <h2>Emergency numbers</h2>
+      <div class="emerg-grid">
+        <a href="tel:102"><span>Ambulance</span><b>102</b></a>
+        <a href="tel:101"><span>Fire Brigade</span><b>101</b></a>
+        <a href="tel:100"><span>Police</span><b>100</b></a>
+        <a href="tel:103"><span>Traffic Police</span><b>103</b></a>
       </div>
-
     </div>
-
-
-    <!-- CATEGORY BUTTONS -->
-    <h3 class="font-extrabold text-xl mb-4">
-      Select Your Required Service
-    </h3>
-
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-7">
-
-      <button class="service-btn active rounded-xl p-4 text-sm font-bold"
-              data-category="all" onclick="selectCategory('all',this)">
-        <i class="fa-solid fa-layer-group block text-xl mb-2"></i>
-        All Services
-      </button>
-
-      <button class="service-btn rounded-xl p-4 text-sm font-bold"
-              data-category="garage" onclick="selectCategory('garage',this)">
-        <i class="fa-solid fa-wrench block text-yellow-400 text-xl mb-2"></i>
-        Mechanics
-      </button>
-
-      <button class="service-btn rounded-xl p-4 text-sm font-bold"
-              data-category="petrol" onclick="selectCategory('petrol',this)">
-        <i class="fa-solid fa-gas-pump block text-orange-400 text-xl mb-2"></i>
-        Petrol Pumps
-      </button>
-
-      <button class="service-btn rounded-xl p-4 text-sm font-bold"
-              data-category="ev" onclick="selectCategory('ev',this)">
-        <i class="fa-solid fa-charging-station block text-blue-400 text-xl mb-2"></i>
-        EV Charging
-      </button>
-
-      <button class="service-btn rounded-xl p-4 text-sm font-bold"
-              data-category="towing" onclick="selectCategory('towing',this)">
-        <i class="fa-solid fa-truck-pickup block text-green-400 text-xl mb-2"></i>
-        Towing
-      </button>
-
-    </div>
-
-
-    <!-- SEARCH AND RADIUS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-7">
-
-      <input id="searchInput"
-             type="search"
-             oninput="renderResults()"
-             placeholder="Search business or location..."
-             class="md:col-span-2 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none focus:border-red-500">
-
-      <select id="radiusSelect"
-              onchange="searchNearbyServices()"
-              class="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none">
-
-        <option value="5000">Within 5 km</option>
-        <option value="10000" selected>Within 10 km</option>
-        <option value="25000">Within 25 km</option>
-
-      </select>
-
-    </div>
-
-
-    <!-- RESULT STATUS -->
-    <div class="flex justify-between items-center mb-4 gap-3">
-
-      <h3 class="font-extrabold text-lg">
-        Nearby Results
-      </h3>
-
-      <span id="resultCount" class="text-xs text-yellow-300">
-        0 services
-      </span>
-
-    </div>
-
-
-    <!-- LOADING -->
-    <div id="loading" class="hidden text-center py-12">
-
-      <i class="fa-solid fa-spinner fa-spin text-yellow-400 text-3xl"></i>
-
-      <p class="text-sm text-slate-300 mt-4">
-        Searching nearby businesses...
-      </p>
-
-    </div>
-
-
-    <!-- RESULTS -->
-    <div id="resultsGrid"
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    </div>
-
-
-    <!-- EMPTY RESULT -->
-    <div id="emptyResults" class="hidden text-center py-12">
-
-      <i class="fa-solid fa-map-pin text-slate-500 text-3xl"></i>
-
-      <h3 class="font-bold mt-4">No matching businesses found</h3>
-
-      <p class="text-sm text-slate-400 mt-2">
-        Try increasing the search radius or selecting another category.
-      </p>
-
-      <button onclick="changeRadius()"
-              class="mt-4 bg-red-600 px-5 py-3 rounded-xl text-sm font-bold">
-        Search within 25 km
-      </button>
-
-    </div>
-
-
-    <!-- MAP -->
-    <div class="text-center mt-9">
-
-      <a id="openMap"
-         href="https://www.openstreetmap.org/"
-         target="_blank"
-         rel="noopener"
-         class="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold text-sm">
-
-        <i class="fa-solid fa-map-location-dot mr-2"></i>
-        Open Nearby Area on Map
-
-      </a>
-
-    </div>
-
   </section>
 
+  <section class="section controls hide" id="controls" aria-label="Filters">
+    <div class="chips" id="chips" role="group" aria-label="Service category"></div>
+    <div class="row">
+      <label class="field">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="search" type="search" placeholder="Search by name" autocomplete="off" aria-label="Search by name">
+      </label>
+      <label class="field sel">
+        <select id="radius" aria-label="Search radius">
+          <option value="2000">2 km</option>
+          <option value="5000" selected>5 km</option>
+          <option value="10000">10 km</option>
+          <option value="20000">20 km</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <div class="count hide" id="count" aria-live="polite"></div>
+  <section id="results" class="list" aria-label="Nearby services"></section>
 </main>
 
-
-<!-- FOOTER -->
-<footer class="bg-slate-950 border-t border-slate-800 py-6 text-center">
-
-  <h3 class="font-extrabold">Mero Mechanic</h3>
-
-  <p class="text-xs text-slate-400 mt-1">
-    Nearby Vehicle Assistance | Chitwan, Nepal
-  </p>
-
-  <p class="text-xs text-slate-500 mt-3">
-    Map data © OpenStreetMap contributors
-  </p>
-
-  <a href="https://www.openstreetmap.org/copyright"
-     target="_blank"
-     rel="noopener"
-     class="text-xs text-blue-400 underline">
-    OpenStreetMap Attribution
-  </a>
-
+<footer>
+  <div class="wrap">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Listings depend on community data and may be incomplete.</div>
 </footer>
 
-
 <script>
-
-// =============================================
-// APPLICATION STATE
-// =============================================
-
-let userLat = null;
-let userLon = null;
-
-let allServices = [];
-let activeCategory = "all";
-
-let currentRadius = 10000;
-let searchRequestNumber = 0;
-
-
-// =============================================
-// HTML SAFETY
-// =============================================
-
-function escapeHTML(value) {
-
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
-
-}
-
-
-// =============================================
-// STATUS
-// =============================================
-
-function setStatus(message) {
-
-  document.getElementById("status").textContent = message;
-
-}
-
-
-// =============================================
-// NATIVE BROWSER LOCATION PROMPT
-// =============================================
-
-function requestLocation() {
-
-  if (!window.isSecureContext) {
-
-    setStatus("GPS requires a secure HTTPS website. Open your GitHub Pages URL.");
-
-    return;
-
-  }
-
-  if (!navigator.geolocation) {
-
-    setStatus("Your browser does not support location services.");
-
-    return;
-
-  }
-
-  const button = document.getElementById("locationButton");
-
-  button.disabled = true;
-
-  setStatus("Waiting for your browser's location permission...");
-
-  // This triggers the browser's normal permission prompt
-  navigator.geolocation.getCurrentPosition(
-
-    function(position) {
-
-      userLat = position.coords.latitude;
-      userLon = position.coords.longitude;
-
-      document.getElementById("welcome").classList.add("hidden");
-
-      document.getElementById("resultsSection").classList.remove("hidden");
-
-      document.getElementById("coordinates").textContent =
-        userLat.toFixed(5) + ", " + userLon.toFixed(5);
-
-      document.getElementById("openMap").href =
-        "https://www.openstreetmap.org/#map=15/" +
-        userLat + "/" + userLon;
-
-      button.disabled = false;
-
-      setStatus("Location detected. Searching nearby services...");
-
-      searchNearbyServices();
-
-    },
-
-    function(error) {
-
-      button.disabled = false;
-
-      if (error.code === 1) {
-
-        setStatus(
-          "Location permission was denied. Allow location access in your browser's site settings, then try again."
-        );
-
-      } else if (error.code === 2) {
-
-        setStatus("Location unavailable. Check your device location settings.");
-
-      } else if (error.code === 3) {
-
-        setStatus("Location request timed out. Please try again.");
-
-      } else {
-
-        setStatus("Unable to detect your location.");
-
-      }
-
-    },
-
-    {
-      enableHighAccuracy: true,
-      timeout: 25000,
-      maximumAge: 0
-    }
-
-  );
-
-}
-
-
-// =============================================
-// DISTANCE USING HAVERSINE FORMULA
-// =============================================
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-
-  const R = 6371;
-
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) ** 2;
-
-  return R * 2 * Math.atan2(
-    Math.sqrt(a),
-    Math.sqrt(1 - a)
-  );
-
-}
-
-
-// =============================================
-// OPENSTREETMAP BUSINESS SEARCH
-// =============================================
-
-async function searchNearbyServices() {
-
-  if (userLat === null || userLon === null) return;
-
-  const requestId = ++searchRequestNumber;
-
-  currentRadius = Number(
-    document.getElementById("radiusSelect").value
-  );
-
-  const loading = document.getElementById("loading");
-
-  loading.classList.remove("hidden");
-
-  document.getElementById("resultsGrid").innerHTML = "";
-
-  document.getElementById("emptyResults").classList.add("hidden");
-
-  document.getElementById("resultCount").textContent = "Searching...";
-
-  setStatus("Searching OpenStreetMap for nearby businesses...");
-
-
-  // Search several business types in ONE request.
-  // This avoids repeating the same hardcoded sample shops.
-
-  const query = `
-    [out:json][timeout:30];
-
-    (
-      nwr(around:${currentRadius},${userLat},${userLon})["amenity"="car_repair"];
-      nwr(around:${currentRadius},${userLat},${userLon})["shop"="car_repair"];
-      nwr(around:${currentRadius},${userLat},${userLon})["craft"="car_repair"];
-
-      nwr(around:${currentRadius},${userLat},${userLon})["amenity"="fuel"];
-
-      nwr(around:${currentRadius},${userLat},${userLon})["amenity"="charging_station"];
-
-      nwr(around:${currentRadius},${userLat},${userLon})["service"="vehicle_towing"];
-    );
-
-    out center tags;
-  `;
-
-
-  // Public Overpass servers; fallback if one is unavailable.
-  const endpoints = [
-    "https://overpass-api.de/api/interpreter",
-    "https://overpass.kumi.systems/api/interpreter"
+(() => {
+  'use strict';
+
+  // ---------- Config ----------
+  const CATEGORIES = {
+    all:     { label: 'All' },
+    repair:  { label: 'Mechanics' },
+    fuel:    { label: 'Petrol pumps' },
+    ev:      { label: 'EV charging' },
+    towing:  { label: 'Towing' }
+  };
+  const TYPE_LABEL = { repair: 'Mechanic / Repair', fuel: 'Petrol pump', ev: 'EV charging', towing: 'Towing' };
+  const ENDPOINTS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://overpass.private.coffee/api/interpreter'
   ];
 
-  let data = null;
-  let lastError = null;
-
-  for (const endpoint of endpoints) {
-
-    try {
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: "data=" + encodeURIComponent(query)
-      });
-
-      if (!response.ok) {
-        throw new Error("Map service returned HTTP " + response.status);
-      }
-
-      data = await response.json();
-
-      break;
-
-    } catch (error) {
-
-      lastError = error;
-
-    }
-
-  }
-
-
-  if (requestId !== searchRequestNumber) return;
-
-  loading.classList.add("hidden");
-
-
-  if (!data) {
-
-    setStatus("Business search is temporarily unavailable. Please try again.");
-
-    document.getElementById("resultCount").textContent = "Search failed";
-
-    console.error(lastError);
-
-    return;
-
-  }
-
-
-  // Convert map records into application results
-  const seen = new Set();
-
-  allServices = [];
-
-  for (const item of data.elements || []) {
-
-    const tags = item.tags || {};
-
-    const lat = item.lat ?? item.center?.lat;
-    const lon = item.lon ?? item.center?.lon;
-
-    if (lat == null || lon == null) continue;
-
-    const id = item.type + "-" + item.id;
-
-    if (seen.has(id)) continue;
-
-    seen.add(id);
-
-    const category = classifyBusiness(tags);
-
-    if (!category) continue;
-
-    const distance = calculateDistance(
-      userLat,
-      userLon,
-      Number(lat),
-      Number(lon)
-    );
-
-    allServices.push({
-
-      id: id,
-
-      name: tags.name ||
-            tags.brand ||
-            categoryLabel(category) + " (Unnamed)",
-
-      category: category,
-
-      lat: Number(lat),
-
-      lon: Number(lon),
-
-      distance: distance,
-
-      address: getAddress(tags),
-
-      phone: tags.phone ||
-             tags["contact:phone"] ||
-             tags.mobile ||
-             "",
-
-      opening: tags.opening_hours || "",
-
-      website: tags.website || ""
-
-    });
-
-  }
-
-
-  // Closest businesses first
-  allServices.sort((a, b) => a.distance - b.distance);
-
-  renderResults();
-
-  setStatus(
-    "Search completed. Results are based on mapped OpenStreetMap businesses."
-  );
-
-}
-
-
-// =============================================
-// BUSINESS CLASSIFICATION
-// =============================================
-
-function classifyBusiness(tags) {
-
-  if (
-    tags.amenity === "car_repair" ||
-    tags.shop === "car_repair" ||
-    tags.craft === "car_repair"
-  ) {
-    return "garage";
-  }
-
-  if (tags.amenity === "fuel") {
-    return "petrol";
-  }
-
-  if (tags.amenity === "charging_station") {
-    return "ev";
-  }
-
-  if (
-    tags.service === "vehicle_towing" ||
-    tags.shop === "towing"
-  ) {
-    return "towing";
-  }
-
-  return null;
-
-}
-
-
-// =============================================
-// CATEGORY LABELS
-// =============================================
-
-function categoryLabel(category) {
-
-  const labels = {
-    garage: "Vehicle Repair",
-    petrol: "Petrol Pump",
-    ev: "EV Charging Station",
-    towing: "Towing Service"
+  const state = { user: null, items: [], category: 'all', query: '', radius: 5000, busy: false, reqId: 0 };
+  const $ = id => document.getElementById(id);
+  const els = {
+    btn: $('locBtn'), btnText: $('locBtnText'), dot: $('dot'), status: $('statusText'),
+    controls: $('controls'), chips: $('chips'), search: $('search'), radius: $('radius'),
+    count: $('count'), results: $('results')
   };
 
-  return labels[category] || "Vehicle Service";
+  // ---------- Helpers ----------
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-}
+  function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371000, rad = Math.PI / 180;
+    const dLat = (lat2 - lat1) * rad, dLon = (lon2 - lon1) * rad;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+  const fmtDist = m => m < 1000 ? Math.round(m / 10) * 10 + ' m' : (m / 1000).toFixed(1) + ' km';
 
-
-// =============================================
-// ADDRESS
-// =============================================
-
-function getAddress(tags) {
-
-  const parts = [
-    tags["addr:street"],
-    tags["addr:suburb"],
-    tags["addr:city"],
-    tags["addr:district"]
-  ].filter(Boolean);
-
-  return parts.length
-    ? parts.join(", ")
-    : "Address not provided on map";
-
-}
-
-
-// =============================================
-// CATEGORY BUTTONS
-// =============================================
-
-function selectCategory(category, button) {
-
-  activeCategory = category;
-
-  document.querySelectorAll(".service-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  if (button) {
-    button.classList.add("active");
+  function setStatus(text, ok) {
+    els.status.textContent = text;
+    els.dot.classList.toggle('ok', !!ok);
   }
 
-  renderResults();
-
-}
-
-
-// =============================================
-// RENDER SEARCH RESULTS
-// =============================================
-
-function renderResults() {
-
-  const grid = document.getElementById("resultsGrid");
-
-  const query = document.getElementById("searchInput")
-    .value.toLowerCase().trim();
-
-  const filtered = allServices.filter(service => {
-
-    const categoryMatch =
-      activeCategory === "all" ||
-      service.category === activeCategory;
-
-    const searchMatch =
-      (
-        service.name + " " +
-        service.address + " " +
-        service.category
-      ).toLowerCase().includes(query);
-
-    return categoryMatch && searchMatch;
-
-  });
-
-
-  document.getElementById("resultCount").textContent =
-    filtered.length + " services found";
-
-
-  grid.innerHTML = "";
-
-
-  if (filtered.length === 0) {
-
-    document.getElementById("emptyResults").classList.remove("hidden");
-
-    return;
-
+  // ---------- Overpass ----------
+  function buildQuery(lat, lon, r) {
+    const a = `(around:${r},${lat},${lon})`;
+    return `[out:json][timeout:25];(
+      nwr["shop"="car_repair"]${a};
+      nwr["amenity"="car_repair"]${a};
+      nwr["shop"="motorcycle_repair"]${a};
+      nwr["amenity"="fuel"]${a};
+      nwr["amenity"="charging_station"]${a};
+      nwr["emergency"="towing"]${a};
+      nwr["service:vehicle:towing"="yes"]${a};
+      nwr["name"~"(^|[^a-zA-Z])(tow|towing|breakdown)([^a-zA-Z]|$)",i]["shop"~"car_repair|car_parts|tyres"]${a};
+      nwr["name"~"(^|[^a-zA-Z])(tow|towing|breakdown)([^a-zA-Z]|$)",i]["craft"]${a};
+      nwr["name"~"(^|[^a-zA-Z])(tow|towing|breakdown)([^a-zA-Z]|$)",i]["office"]${a};
+    );out center tags;`;
   }
 
-  document.getElementById("emptyResults").classList.add("hidden");
+  async function fetchOverpass(query) {
+    let lastErr;
+    for (const url of ENDPOINTS) {
+      let t;
+      try {
+        const ctrl = new AbortController();
+        t = setTimeout(() => ctrl.abort(), 30000);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'data=' + encodeURIComponent(query),
+          signal: ctrl.signal
+        });
+        clearTimeout(t);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
+        if (!json || !Array.isArray(json.elements)) throw new Error('Bad response');
+        return json.elements;
+      } catch (e) { lastErr = e; clearTimeout(t); }
+    }
+    throw lastErr || new Error('All servers failed');
+  }
 
+  function classify(tags) {
+    const types = [];
+    if (tags.amenity === 'fuel') types.push('fuel');
+    if (tags.amenity === 'charging_station') types.push('ev');
+    if (tags.shop === 'car_repair' || tags.amenity === 'car_repair' || tags.shop === 'motorcycle_repair') types.push('repair');
+    const vehicleBiz = /^(car_repair|car_parts|tyres)$/.test(tags.shop || '') || tags.craft || tags.office;
+    const nameTow = vehicleBiz && /\b(tow|towing|breakdown)\b/i.test(tags.name || '');
+    if (tags.emergency === 'towing' || tags['service:vehicle:towing'] === 'yes' || nameTow) types.push('towing');
+    return types;
+  }
 
-  filtered.forEach((service, index) => {
+  function normalise(elements, user) {
+    const out = [], seen = new Set();
+    for (const el of elements) {
+      const lat = el.lat ?? el.center?.lat, lon = el.lon ?? el.center?.lon;
+      if (typeof lat !== 'number' || typeof lon !== 'number') continue;
+      const tags = el.tags || {};
+      const types = classify(tags);
+      if (!types.length) continue;
+      // primary type: towing > fuel > ev > repair (a named tow business is shown under Towing)
+      const type = types[0];
+      const name = (tags.name || tags['name:en'] || tags.brand || tags.operator || '').trim() || 'Unnamed ' + TYPE_LABEL[type].toLowerCase();
+      const key = `${el.type}/${el.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({
+        key, type, types, name, lat, lon,
+        dist: haversine(user.lat, user.lon, lat, lon),
+        phone: (tags.phone || tags['contact:phone'] || tags.mobile || tags['contact:mobile'] || '').split(';')[0].trim(),
+        hours: tags.opening_hours || '',
+        address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:city'] || tags['addr:suburb']].filter(Boolean).join(', '),
+        named: !!(tags.name || tags['name:en'] || tags.brand || tags.operator)
+      });
+    }
+    // Remove duplicates: same type + same name within ~40 m (e.g. a node and its building outline)
+    out.sort((a, b) => a.dist - b.dist);
+    const final = [];
+    for (const it of out) {
+      const dup = it.named && final.some(f => f.named && f.type === it.type && f.name.toLowerCase() === it.name.toLowerCase() &&
+        haversine(f.lat, f.lon, it.lat, it.lon) < 40);
+      if (!dup) final.push(it);
+    }
+    return final;
+  }
 
-    const directions =
-      "https://www.google.com/maps/dir/?api=1" +
-      "&origin=" + encodeURIComponent(userLat + "," + userLon) +
-      "&destination=" + encodeURIComponent(service.lat + "," + service.lon) +
-      "&travelmode=driving";
+  // ---------- Rendering ----------
+  const ICON = {
+    pin: '<svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+    clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    nav: '<svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>',
+    map: '<svg viewBox="0 0 24 24"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2zM9 3v16M15 5v16"/></svg>'
+  };
 
-    const mapLink =
-      "https://www.openstreetmap.org/?mlat=" +
-      service.lat + "&mlon=" + service.lon +
-      "#map=18/" + service.lat + "/" + service.lon;
+  function renderChips() {
+    const counts = { all: state.items.length, repair: 0, fuel: 0, ev: 0, towing: 0 };
+    state.items.forEach(i => i.types.forEach(t => counts[t]++));
+    els.chips.innerHTML = Object.entries(CATEGORIES).map(([k, c]) =>
+      `<button type="button" class="chip" data-cat="${k}" aria-pressed="${state.category === k}">${c.label}<small>${counts[k]}</small></button>`
+    ).join('');
+  }
 
-    const icon = {
-      garage: "fa-wrench",
-      petrol: "fa-gas-pump",
-      ev: "fa-charging-station",
-      towing: "fa-truck-pickup"
-    }[service.category];
+  function stateBox(html) { els.results.innerHTML = `<div class="state">${html}</div>`; }
 
-    const color = {
-      garage: "text-yellow-400",
-      petrol: "text-orange-400",
-      ev: "text-blue-400",
-      towing: "text-green-400"
-    }[service.category];
+  function renderList() {
+    const q = state.query.trim().toLowerCase();
+    const list = state.items.filter(i =>
+      (state.category === 'all' || i.types.includes(state.category)) &&
+      (!q || i.name.toLowerCase().includes(q) || i.address.toLowerCase().includes(q)));
+    els.count.classList.remove('hide');
+    els.count.textContent = `${list.length} result${list.length === 1 ? '' : 's'} within ${state.radius / 1000} km, nearest first`;
 
-    const card = document.createElement("article");
-
-    card.className = "service-card";
-
-    card.innerHTML = `
-
-      <div class="flex justify-between items-start gap-3 mb-3">
-
-        <div class="flex items-center gap-3">
-
-          <div class="w-11 h-11 rounded-xl bg-slate-700 flex items-center justify-center">
-            <i class="fa-solid ${icon} ${color} text-xl"></i>
-          </div>
-
-          <div>
-            <p class="text-xs text-slate-400">
-              ${escapeHTML(categoryLabel(service.category))}
-            </p>
-
-            <h3 class="font-bold text-base">
-              ${escapeHTML(service.name)}
-            </h3>
-          </div>
-
+    if (!list.length) {
+      const hasAny = state.items.length > 0;
+      stateBox(`<h3>No matches found</h3><p>${hasAny
+        ? 'Nothing fits this category or search. Clear the search or choose another category.'
+        : 'OpenStreetMap has no listings in this area yet. Try a larger radius.'}</p>
+        <button class="btn btn-ghost btn-sm" type="button" id="widen">${hasAny ? 'Show all categories' : 'Search wider'}</button>`);
+      return;
+    }
+    els.results.innerHTML = list.map((i, n) => {
+      const g = `https://www.google.com/maps/dir/?api=1&origin=${state.user.lat},${state.user.lon}&destination=${i.lat},${i.lon}&travelmode=driving`;
+      const o = `https://www.openstreetmap.org/?mlat=${i.lat}&mlon=${i.lon}#map=18/${i.lat}/${i.lon}`;
+      const tel = i.phone.replace(/[^\d+]/g, '');
+      return `<article class="card" style="--i:${Math.min(n, 8)}">
+        <div class="top"><div><h3>${esc(i.name)}</h3>${i.types.map(t => `<span class="tag">${TYPE_LABEL[t]}</span>`).join(' ')}</div><div class="dist">${fmtDist(i.dist)}</div></div>
+        <div class="meta">
+          ${i.address ? `<div>${ICON.pin}<span>${esc(i.address)}</span></div>` : ''}
+          <div>${ICON.phone}<span>${i.phone ? esc(i.phone) : 'Phone not listed'}</span></div>
+          <div>${ICON.clock}<span>${i.hours ? esc(i.hours.replace(/\s*;\s*/g, ' · ')) : 'Hours not listed'}</span></div>
         </div>
+        <div class="actions">
+          <a class="btn btn-red btn-sm" href="${g}" target="_blank" rel="noopener">${ICON.nav}Directions</a>
+          ${tel ? `<a class="btn btn-ghost btn-sm" href="tel:${esc(tel)}">${ICON.phone}Call</a>` : ''}
+          <a class="btn btn-ghost btn-sm" href="${o}" target="_blank" rel="noopener">${ICON.map}OpenStreetMap</a>
+        </div>
+      </article>`;
+    }).join('');
+  }
 
-        ${index === 0 && activeCategory !== "all"
-          ? '<span class="text-xs text-yellow-300 font-bold">Nearest</span>'
-          : ''}
+  // ---------- Flow ----------
+  function setBusy(b) {
+    state.busy = b;
+    els.btn.disabled = b;
+    els.btn.classList.toggle('pulse', b);
+    els.btnText.textContent = b ? 'Working…' : (state.user ? 'Update my location' : 'Use my location');
+  }
 
-      </div>
+  function geoErrorMessage(err) {
+    if (!window.isSecureContext) return ['Secure connection needed', 'Location only works over HTTPS. Open this page from its https:// address.'];
+    switch (err.code) {
+      case 1: return ['Location permission denied', 'Allow location access for this site in your browser settings, then try again.'];
+      case 2: return ['Location unavailable', 'Your device could not determine its position. Turn on GPS or move to an open area, then retry.'];
+      case 3: return ['Location timed out', 'Getting your position took too long. Check your signal and try again.'];
+      default: return ['Location error', 'Something went wrong while reading your location. Try again.'];
+    }
+  }
 
+  function getLocation() {
+    if (state.busy) return;
+    if (!navigator.geolocation) {
+      stateBox('<h3>Location not supported</h3><p>This browser has no geolocation support. Try a current version of Chrome, Safari or Firefox.</p>');
+      return;
+    }
+    setBusy(true);
+    setStatus('Waiting for location permission…');
+    stateBox('<div class="spin"></div><h3>Detecting your location</h3><p>Approve the browser prompt to continue.</p>');
+    const onOk = pos => {
+      state.user = { lat: pos.coords.latitude, lon: pos.coords.longitude, acc: pos.coords.accuracy };
+      setStatus(`Location found (±${Math.round(pos.coords.accuracy)} m)`, true);
+      loadNearby();
+    };
+    const onFail = err => {
+      const [t, m] = geoErrorMessage(err);
+      setStatus(t);
+      setBusy(false);
+      stateBox(`<h3>${t}</h3><p>${m}</p><button class="btn btn-red btn-sm" type="button" id="retry">Try again</button>`);
+    };
+    navigator.geolocation.getCurrentPosition(onOk, err => {
+      if (err.code === 1) return onFail(err);
+      navigator.geolocation.getCurrentPosition(onOk, onFail, { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 });
+    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 });
+  }
 
-      <p class="text-xs text-slate-400 mb-3">
-        <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>
-        ${escapeHTML(service.address)}
-      </p>
+  async function loadNearby() {
+    if (!state.user) return;
+    const id = ++state.reqId;
+    setBusy(true);
+    els.controls.classList.remove('hide');
+    els.count.classList.add('hide');
+    stateBox('<div class="spin"></div><h3>Searching nearby</h3><p>Looking up businesses within ' + state.radius / 1000 + ' km…</p>');
+    try {
+      const raw = await fetchOverpass(buildQuery(state.user.lat, state.user.lon, state.radius));
+      if (id !== state.reqId) return;
+      state.items = normalise(raw, state.user);
+      renderChips();
+      renderList();
+    } catch (e) {
+      if (id !== state.reqId) return;
+      state.items = [];
+      renderChips();
+      els.count.classList.add('hide');
+      stateBox('<h3>Could not load services</h3><p>The map data servers did not respond. Check your connection and try again.</p><button class="btn btn-red btn-sm" type="button" id="retryLoad">Retry search</button>');
+    } finally {
+      if (id === state.reqId) setBusy(false);
+    }
+  }
 
+  // ---------- Theme ----------
+  const SUN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  const MOON = '<svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  const themeBtn = $('themeBtn');
+  function paintTheme() {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    themeBtn.innerHTML = dark ? SUN : MOON;
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    document.querySelector('meta[name="theme-color"]').content = dark ? '#121315' : '#d62828';
+  }
+  themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('mm-theme', next); } catch (e) {}
+    paintTheme();
+  });
+  paintTheme();
 
-      <div class="bg-slate-900 rounded-lg p-3 mb-4">
-
-        <p class="text-green-300 font-bold text-sm">
-          ${service.distance.toFixed(2)} km away
-        </p>
-
-        <p class="text-xs text-slate-500">
-          Straight-line distance from your GPS location
-        </p>
-
-      </div>
-
-
-      ${service.opening
-        ? `<p class="text-xs text-slate-400 mb-3">
-             <i class="fa-regular fa-clock mr-1"></i>
-             ${escapeHTML(service.opening)}
-           </p>`
-        : ''}
-
-
-      <div class="flex flex-wrap gap-2">
-
-        <a href="${directions}"
-           target="_blank"
-           rel="noopener"
-           class="flex-1 text-center bg-blue-600 hover:bg-blue-500 rounded-lg p-3 text-xs font-bold">
-
-          <i class="fa-solid fa-route mr-1"></i>
-          Directions
-
-        </a>
-
-        <a href="${mapLink}"
-           target="_blank"
-           rel="noopener"
-           class="flex-1 text-center bg-slate-700 hover:bg-slate-600 rounded-lg p-3 text-xs font-bold">
-
-          <i class="fa-solid fa-map mr-1"></i>
-          View Map
-
-        </a>
-
-      </div>
-
-
-      ${service.phone
-        ? `<a href="tel:${escapeHTML(service.phone)}"
-              class="block text-center bg-green-700 hover:bg-green-600 rounded-lg p-3 mt-2 text-xs font-bold">
-              <i class="fa-solid fa-phone mr-1"></i>
-              Call Business
-           </a>`
-        : ''}
-
-
-      <p class="text-xs text-slate-500 mt-3">
-        Map record: OpenStreetMap
-      </p>
-
-    `;
-
-    grid.appendChild(card);
-
+  // ---------- Events ----------
+  els.btn.addEventListener('click', getLocation);
+  els.chips.addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    state.category = b.dataset.cat;
+    renderChips(); renderList();
+  });
+  els.search.addEventListener('input', e => { state.query = e.target.value; if (state.user && !state.busy) renderList(); });
+  els.radius.addEventListener('change', e => { state.radius = +e.target.value; loadNearby(); });
+  els.results.addEventListener('click', e => {
+    const id = e.target.id;
+    if (id === 'retry') getLocation();
+    else if (id === 'retryLoad') loadNearby();
+    else if (id === 'widen') {
+      if (state.items.length) { state.category = 'all'; state.query = ''; els.search.value = ''; renderChips(); renderList(); }
+      else { const next = [...els.radius.options].find(o => +o.value > state.radius); if (next) { els.radius.value = next.value; state.radius = +next.value; loadNearby(); } }
+    }
   });
 
-}
-
-
-// =============================================
-// INCREASE SEARCH RADIUS
-// =============================================
-
-function changeRadius() {
-
-  document.getElementById("radiusSelect").value = "25000";
-
-  searchNearbyServices();
-
-}
-
+  stateBox('<h3>Ready when you are</h3><p>Tap “Use my location” to see mechanics, fuel, EV charging and towing around you.</p>');
+})();
 </script>
-
 </body>
 </html>
