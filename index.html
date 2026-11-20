@@ -1106,22 +1106,3 @@ header { background: var(--card); border-bottom: 1px solid var(--line); position
 </script>
 </body>
 </html>
-```
-
-### Key Features Included:
-1. **Google Maps Live Embed & Direct Navigation Actions**:
-   - Uses zero-key embedded Google Maps iframe viewers (`https://maps.google.com/maps?q=...&output=embed`) that respond live to category selection, search terms, and distance radius changes.
-   - Every service card features direct **Google Directions** links (`https://www.google.com/maps/dir/?api=1&...`) and **Google Place Info** search links.
-2. **GPS Geolocation & Bharatpur Fallback**:
-   - Detects real device coordinates via `navigator.geolocation` or smoothly defaults to **Bharatpur, Chitwan, Nepal** (`27.6833, 84.4333`) if denied or running in a sandboxed preview environment.
-3. **Interactive Service Controls & Cards**:
-   - Category filters: *All Services, Mechanics & Garages, Petrol Pumps, EV Charging, Towing*.
-   - Live distance calculator (Haversine formula), opening hours, phone call links, and responsive grid layout.
-4. **Emergency SOS & AI Assistant**:
-   - Quick SOS modal for Nepal emergency hotlines (Ambulance 102, Fire 101, Police 100, Traffic Police 103).
-   - Conversational **Mero Mech AI** assistant providing instant Google Maps query links and guidance.
-5. **Secure Local Authentication & Theme Toggle**:
-   - PBKDF2 Web Crypto password hashing stored safely in `localStorage`.
-   - Dark/Light mode theme toggle.
-6. **Live Highway Ticker**:
-   - Smooth animated highway status ticker at the bottom of the page with incident detail popups.
